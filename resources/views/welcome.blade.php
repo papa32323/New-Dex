@@ -3,107 +3,183 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pokédex Laravel</title>
+    <title>API DEX</title>
 
     <style>
+
         body {
-            font-family: 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #1f0033, #3a0066, #5e00b3);
+            background: url("{{ asset('Pikachu.jpg') }}");
+            background-size: cover;
+            background-position: center;
             margin: 0;
             padding: 40px;
-            color: #ffffff;
+            font-family: 'Segoe UI', sans-serif;
         }
 
+        /* Título */
         h1 {
             text-align: center;
-            font-size: 50px;
+            font-size: 55px;
             font-weight: 900;
-            text-shadow: 0px 0px 20px rgba(255, 0, 255, 0.7);
             margin-bottom: 40px;
+            color: #b8842a;
+            text-shadow: 0 0 12px rgba(255, 230, 150, 0.9);
         }
 
-        /* GRID */
+        /* Grid */
         .grid {
-            width: 90%;
+            width: 95%;
             margin: auto;
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 35px;
         }
 
-        /* CARD */
+        /* =========✨ CARTA HOLOGRÁFICA REAL ✨=========== */
         .card {
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(8px);
-            border-radius: 18px;
-            padding: 25px;
+            position: relative;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+            padding: 35px 25px;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(20px);
+            overflow: hidden;
+            transition: 0.4s ease;
             text-align: center;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-            transition: 0.3s;
-            border: 1px solid rgba(255, 255, 255, 0.15);
+
+            /* PARA EVITAR QUE TODO SE JUNTE */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+
+            box-shadow: 0 0 25px rgba(255, 200, 120, 0.35);
         }
 
+        /* 🌈 CAPA HOLOGRÁFICA ARCOIRIS */
+        .card::before {
+            content: "";
+            position: absolute;
+            inset: -60px;
+            background: conic-gradient(
+                #ffdf6b,
+                #ff9a3c,
+                #ff70d6,
+                #8d6bff,
+                #4db8ff,
+                #4dffb8,
+                #fff387,
+                #ffdf6b
+            );
+            opacity: 0.45;
+            mix-blend-mode: screen;
+            animation: holoSpin 5s linear infinite;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* ✨ DESTELLOS DINÁMICOS */
+        .card::after {
+            content: "";
+            position: absolute;
+            inset: -10px;
+            background:
+                radial-gradient(circle at 25% 30%, rgba(255,255,255,0.8), transparent 60%),
+                radial-gradient(circle at 75% 70%, rgba(255,255,200,0.6), transparent 70%);
+            animation: holoGlow 4s ease-in-out infinite alternate;
+            mix-blend-mode: overlay;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        @keyframes holoSpin {
+            0% { transform: rotate(0deg) scale(1.3); }
+            100% { transform: rotate(360deg) scale(1.3); }
+        }
+
+        @keyframes holoGlow {
+            0% { opacity: 0.2; filter: brightness(1); }
+            100% { opacity: 0.9; filter: brightness(1.5); }
+        }
+
+        /* Hover más pro */
         .card:hover {
-            transform: scale(1.07);
-            box-shadow: 0 0 25px rgba(0, 170, 255, 0.8);
+            transform: translateY(-12px) scale(1.08);
+            box-shadow: 0 0 40px rgba(255, 230, 150, 1),
+                        0 0 80px rgba(255, 170, 90, 0.9);
         }
 
-        /* IMAGEN */
-        .card img {
-            width: 150px;
-            height: 150px;
-            margin-bottom: 15px;
-            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.4));
-            transition: 0.25s;
-        }
-
-        .card:hover img {
-            transform: scale(1.15);
-        }
-
-        /* ID */
+        /* ========= TEXTOS BONITOS ========== */
         .poke-id {
             font-size: 22px;
             font-weight: 900;
-            color: #00eaff;
-            margin-bottom: 8px;
-            text-shadow: 0px 0px 10px #00ffff;
+            color: #8a6a2d;
+            text-shadow: 0 0 8px rgba(255,255,180,0.8);
         }
 
-        /* NOMBRE */
         .poke-name {
-            font-size: 20px;
-            font-weight: 700;
+            font-size: 32px;
+            font-weight: 900;
             text-transform: capitalize;
-            color: #ffd6ff;
+            color: #5e4210;
+            text-shadow: 0 0 6px rgba(255,220,150,0.9);
+        }
+
+        /* Caja de datos */
+        .data-box {
+            width: 80%;
+            background: rgba(255, 240, 190, 0.65);
+            border: 2px solid #d9a441;
+            border-radius: 15px;
+            padding: 15px;
+            font-size: 18px;
+            line-height: 26px;
+            color: #6c4d1a;
+            box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .data-box strong {
+            color: #d98913;
+        }
+
+        /* Tipo de Pokémon */
+        .type {
+            background: #d98913;
+            padding: 6px 14px;
+            border-radius: 10px;
+            font-weight: bold;
+            color: white;
+            margin-right: 6px;
+            display: inline-block;
         }
 
     </style>
 </head>
 <body>
 
-    <h1>Pokédex Laravel</h1>
+    <h1>API POKEDEX</h1>
 
     <div class="grid">
-
         @foreach ($pokemones as $pokemon)
-            @php
-                $url = $pokemon['url'];
-                $id = explode('/', trim($url, '/'));
-                $id = end($id);
-            @endphp
-
             <div class="card">
-                <div class="poke-id">#{{ $id }}</div>
 
-                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{{ $id }}.png"
-                     alt="{{ $pokemon['name'] }}">
+                <div class="poke-id">#{{ $pokemon['id'] }}</div>
+
+                <img src="{{ $pokemon['sprite'] }}" alt="{{ $pokemon['name'] }}">
 
                 <div class="poke-name">{{ $pokemon['name'] }}</div>
+
+                <div class="data-box">
+                    <strong>Altura:</strong> {{ $pokemon['height'] }} dm <br>
+                    <strong>Peso:</strong> {{ $pokemon['weight'] }} hg <br>
+                    <strong>Tipo:</strong>
+                    @foreach ($pokemon['types'] as $type)
+                        <span class="type">{{ $type }}</span>
+                    @endforeach
+                </div>
+
             </div>
-
         @endforeach
-
     </div>
 
 </body>
